@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.activities.HeaderFragment">
+
+    <ImageButton
+        android:id="@+id/nav_button"
+        android:layout_width="50dp"
+        android:padding="0dp"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:background="@color/orange"
+        android:src="@drawable/ic_navigation_more"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:gravity="center_vertical"
+        android:layout_height="match_parent"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:paddingLeft="10dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:text="Notes"
+        android:background="@color/orange"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/nav_button"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

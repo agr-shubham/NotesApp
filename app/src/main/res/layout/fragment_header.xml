@@ -34,4 +34,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/nav_button"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/save_button"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:background="@color/orange"
+        android:padding="3dp"
+        android:paddingEnd="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_save_icon_svgrepo_com"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

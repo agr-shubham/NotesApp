@@ -1,4 +1,6 @@
 package com.shubham.notes.UI.activities
 
 data class Notes(
-    var title:String, var note: String)
+    var id:Int,
+    var title:String,
+    var note: String)

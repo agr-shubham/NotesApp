@@ -17,7 +17,7 @@
     </FrameLayout>
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/note_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/dark_gray"

@@ -18,6 +18,14 @@ class NotesViewModel(private val repository: NotesRepository) : ViewModel() {
     fun insert(note: Notes) = viewModelScope.launch {
         repository.insert(note)
     }
+
+    fun update(notes: Notes) = viewModelScope.launch{
+        repository.update(notes)
+    }
+
+    fun getNote(id: Long) :Notes{
+        return repository.getNote(id)
+    }
 }
 
 class NotesViewModelFactory(private val repository: NotesRepository) : ViewModelProvider.Factory {

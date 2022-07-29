@@ -1,10 +1,7 @@
 package com.shubham.notes.UI.activities.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.shubham.notes.UI.activities.entity.Notes
 import kotlinx.coroutines.flow.Flow
 
@@ -18,5 +15,11 @@ interface NotesDao {
 
     @Query("DELETE FROM notes_table")
     suspend fun deleteAll()
+
+    @Update
+    abstract fun update(notes: Notes)
+
+    @Query("SELECT * FROM notes_table WHERE id= :id")
+    abstract fun getNote(id: Long) : Notes
 
 }

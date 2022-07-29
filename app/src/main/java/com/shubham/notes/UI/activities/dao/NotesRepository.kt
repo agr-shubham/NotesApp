@@ -21,4 +21,15 @@ class NotesRepository(private val notesDao: NotesDao) {
         // This is where the user typed word gets inserted to the DB..
         notesDao.insert(note)
     }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    fun update(notes: Notes) {
+        notesDao.update(notes)
+
+    }
+
+    fun getNote(id: Long) :Notes {
+        return notesDao.getNote(id)
+    }
 }

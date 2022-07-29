@@ -20,6 +20,8 @@ import com.shubham.notes.UI.activities.entity.Notes
 class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
     var noteContentEditText : EditText? = null;
+    var noteTitleEditText : EditText? = null;
+    var id:Long = 0L;
 
     private val notesViewModel: NotesViewModel by viewModels {
 
@@ -32,6 +34,8 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
 
+
+        Log.d("notesViewModel Home", "notesViewModel Home"+notesViewModel)
         var buttonListNotes : ImageButton = findViewById<ImageButton>(R.id.nav_button) as ImageButton
         var saveButton : ImageButton = findViewById<ImageButton>(R.id.save_button) as ImageButton
 
@@ -39,11 +43,21 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         saveButton.setOnClickListener(this)
 
         noteContentEditText = findViewById<EditText>(R.id.note_content) as EditText
+        noteTitleEditText = findViewById<EditText>(R.id.note_title) as EditText
 //        notesViewModel.allWords.observe(this@HomeActivity) { notes ->
 //            Log.d("Note Created","Note Created")
 //            Toast.makeText(this,"Note Created",Toast.LENGTH_LONG).show()
 //
 //        }
+
+        val extras: Bundle? = getIntent().getExtras();
+
+        if (intent.hasExtra("id")) {
+            id=extras!!.getLong("id")
+            val currentNote :Notes =notesViewModel.getNote(id);
+            noteTitleEditText!!.setText(currentNote.title)
+            noteContentEditText!!.setText(currentNote.note)
+        }
 
     }
 
@@ -65,20 +79,15 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
 //        var noteContent : String = noteContentEditText.text.toString();
         var noteContent : String =noteContentEditText!!.text.toString() ;
+        var noteTitle : String =noteTitleEditText!!.text.toString() ;
         var titleLastIndex :Int = noteContent.indexOf('\n');
-        if(noteContent.trim().length==0)
-        {
-            //Toast empty note
+        if(id==0L) {
+            notesViewModel.insert(Notes(noteTitle, noteContent, 0, 0))
+            Toast.makeText(this,"Note Saved",Toast.LENGTH_SHORT).show()
         }
-        if(titleLastIndex==-1)
-        {
-            titleLastIndex= Integer.min(40, noteContent.length);
+        else {
+            notesViewModel.update(Notes(noteTitle, noteContent, 0, 0, id))
+            Toast.makeText(this,"Note Updated",Toast.LENGTH_SHORT).show()
         }
-        else
-        {
-            titleLastIndex= Integer.min(titleLastIndex, 40);
-        }
-        var noteTitle = noteContent.substring(0,titleLastIndex)
-        notesViewModel.insert(Notes(noteTitle,noteContent,0,0))
     }
 }

@@ -27,7 +27,7 @@ abstract class NotesRoomDatabase : RoomDatabase(){
                     context.applicationContext,
                     NotesRoomDatabase::class.java,
                     "notes_database"
-                )
+                ).allowMainThreadQueries()
                     .build()
                 INSTANCE = instance
                 instance

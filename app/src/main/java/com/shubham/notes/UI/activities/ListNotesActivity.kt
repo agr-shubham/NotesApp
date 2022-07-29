@@ -1,6 +1,7 @@
 package com.shubham.notes.UI.activities
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
@@ -30,6 +31,7 @@ class ListNotesActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_notes)
 
+        Log.d("notesViewModel List", "notesViewModel List"+notesViewModel)
 
         var recyclerView = findViewById<RecyclerView>(R.id.recyclerView1) as RecyclerView
         recyclerView.addItemDecoration(DividerItemDecoration(this, 0));
@@ -39,6 +41,7 @@ class ListNotesActivity : AppCompatActivity(){
 
 
         var buttonListNotes : ImageButton = findViewById<ImageButton>(R.id.nav_button) as ImageButton
+        var new_note_button : ImageButton = findViewById<ImageButton>(R.id.new_note_button) as ImageButton
 
         buttonListNotes.setOnClickListener {
             (this as Activity).finishAfterTransition()
@@ -57,6 +60,12 @@ class ListNotesActivity : AppCompatActivity(){
                 adapter.updateList(it)
             }
         }
+
+        new_note_button.setOnClickListener{
+            val newNoteIntent = Intent(this, HomeActivity::class.java)
+            startActivity(newNoteIntent)
+        }
+
         notesList.forEach {
             notesViewModel.insert(it)
         }

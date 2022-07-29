@@ -46,14 +46,14 @@ class ListNotesAdapter(private var notes: Array<Notes>) : RecyclerView.Adapter<L
 //         holder.fDesc.text = descriptions [ position ]
 
         holder.apply {
-            titleTv.text = notes[position].title
-            noteFirstLineTv.text = notes[position].note.substring(0,min(40,notes[position].note.length))
+            titleTv.text = notes!![position].title
+            noteFirstLineTv.text = notes!![position].note.substring(0,min(40, notes!![position].note.length))
         }
 
 
     }
 
     override fun getItemCount(): Int {
-        return notes.size
+        return notes!!.size
     }
 }

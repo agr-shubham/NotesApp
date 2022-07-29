@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shubham.notes.R
-import com.shubham.notes.UI.activities.Notes
+import com.shubham.notes.UI.activities.entity.Notes
 import java.lang.Integer.min
 
 class ListNotesAdapter(private var notes: Array<Notes>) : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){

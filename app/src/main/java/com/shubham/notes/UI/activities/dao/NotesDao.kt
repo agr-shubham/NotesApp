@@ -1,5 +1,6 @@
 package com.shubham.notes.UI.activities.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -10,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NotesDao {
     @Query("SELECT * FROM notes_table ORDER BY title ASC")
-    fun getAlphabetizedNotes(): Flow<List<Notes>>
+    fun getAlphabetizedNotes(): LiveData<List<Notes>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(word: Notes)

@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.shubham.notes.R
 import androidx.activity.viewModels
@@ -38,9 +39,11 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         saveButton.setOnClickListener(this)
 
         noteContentEditText = findViewById<EditText>(R.id.note_content) as EditText
-        notesViewModel.allWords.observe(this@HomeActivity) { notes ->
-
-        }
+//        notesViewModel.allWords.observe(this@HomeActivity) { notes ->
+//            Log.d("Note Created","Note Created")
+//            Toast.makeText(this,"Note Created",Toast.LENGTH_LONG).show()
+//
+//        }
 
     }
 

@@ -1,5 +1,6 @@
 package com.shubham.notes.UI.activities.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +10,12 @@ import com.shubham.notes.R
 import com.shubham.notes.UI.activities.entity.Notes
 import java.lang.Integer.min
 
-class ListNotesAdapter(private var notes: Array<Notes>) : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
+class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
+    private val notes = ArrayList<Notes>();
     inner  class ViewHolder( itemView : View): RecyclerView.ViewHolder(itemView){
+        val titleTv : TextView = itemView.findViewById(R.id.note_title)
         // 11cf  inflated memory
 
-        val titleTv : TextView = itemView.findViewById(R.id.note_title)
         val noteFirstLineTv: TextView = itemView.findViewById(R.id.note_first_line)
 //
 //        init {
@@ -32,6 +34,16 @@ class ListNotesAdapter(private var notes: Array<Notes>) : RecyclerView.Adapter<L
 //        }
 
 
+    }
+
+    fun updateList(newList:List<Notes>)
+    {
+        Log.i("List Changed", "updateList: $newList")
+        notes.clear()
+
+        notes.addAll(newList)
+        //notify data change
+        notifyDataSetChanged()
     }
 
     // MainActivity ( context ) -> member of mainactivity ViewGroup.context

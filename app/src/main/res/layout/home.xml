@@ -16,7 +16,7 @@
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:background="@color/orange"
-            android:src="@drawable/ic_navigation_more"
+            android:src="@drawable/ic_baseline_arrow_back_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

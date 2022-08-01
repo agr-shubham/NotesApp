@@ -17,9 +17,9 @@ class NotesRepository(private val notesDao: NotesDao) {
     // off the main thread.
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun insert(note: Notes) {
+    fun insert(note: Notes) : Long {
         // This is where the user typed word gets inserted to the DB..
-        notesDao.insert(note)
+        return notesDao.insert(note)
     }
 
     @Suppress("RedundantSuspendModifier")
@@ -31,5 +31,9 @@ class NotesRepository(private val notesDao: NotesDao) {
 
     fun getNote(id: Long) :Notes {
         return notesDao.getNote(id)
+    }
+
+    fun delete(id: Long) {
+        return notesDao.deleteNote(id)
     }
 }

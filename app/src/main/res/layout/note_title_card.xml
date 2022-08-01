@@ -37,8 +37,17 @@
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="@color/white"
                 android:text="First Line of note then truncated..."/>
+                <TextView
+                android:id="@+id/note_last_modified"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="@color/dull_white"
+                android:text="Last Modified:"/>
         </LinearLayout>
         <Button
+            android:id="@+id/item_popup_menu"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:background="@color/dark_gray"

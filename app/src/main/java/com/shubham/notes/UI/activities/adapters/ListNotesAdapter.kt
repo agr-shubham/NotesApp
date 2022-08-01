@@ -6,14 +6,27 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.shubham.notes.R
 import com.shubham.notes.UI.activities.HomeActivity
+import com.shubham.notes.UI.activities.NotesApplication
+import com.shubham.notes.UI.activities.dao.NotesViewModel
+import com.shubham.notes.UI.activities.dao.NotesViewModelFactory
 import com.shubham.notes.UI.activities.entity.Notes
 import java.lang.Integer.min
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+
+
 
 class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
+
     private val notes = ArrayList<Notes>();
     inner  class ViewHolder( itemView : View): RecyclerView.ViewHolder(itemView){
         val titleTv : TextView = itemView.findViewById(R.id.note_title)
@@ -21,7 +34,8 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
 
         val noteFirstLineTv: TextView = itemView.findViewById(R.id.note_first_line)
 
-
+        val lastModified: TextView = itemView.findViewById(R.id.note_last_modified)
+        val menu: Button = itemView.findViewById<Button>(R.id.item_popup_menu)
     }
 
     fun updateList(newList:List<Notes>)
@@ -46,12 +60,12 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
 //         holder.fDesc.text = descriptions [ position ]
 
         holder.apply {
-            titleTv.text = notes!![position].title
             titleTv.text = getTruncatedTitle(notes!![position].title)
 //            noteFirstLineTv.text = notes!![position].note.substring(0,min(40, notes!![position].note.length))
             noteFirstLineTv.text = getTruncatedContent(notes!![position].note)
-            itemView.setOnClickListener {
-                    v: View ->
+            lastModified.text =
+                "Lost Modified: " + SimpleDateFormat("dd-MM-yy HH:mm").format(Date(notes!![position].updateTime))
+            itemView.setOnClickListener { v: View ->
                 var b: Bundle = Bundle();
                 b.putLong("id", notes[position].id)
 
@@ -60,13 +74,33 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
                 itemView.context.startActivity(productIntent)
 
             }
+//            menu.setOnClickListener {
+//                val popupMenu: PopupMenu = PopupMenu(itemView.context, menu)
+//                popupMenu.menuInflater.inflate(R.menu.list_notes_item_menu, popupMenu.menu)
+//                popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+//                    when (item.itemId) {
+//                        R.id.menu_delete ->
+//                            notes.removeAt(position)
+//                        R.id.menu_share ->{
+//                            val shareIntent = Intent()
+//                            productIntent.putExtras(b)
+//                        }
+//                    }
+//                    true
+//                })
+//                popupMenu.show()
+//            }
+
+
         }
-
-
     }
 
     private fun getTruncatedTitle(title: String): String {
 
+        if(title.length==0)
+        {
+            return "Untitled"
+        }
         if(title.length>30)
         {
             return title.substring(0,30)+"..."
@@ -89,18 +123,24 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
         else{
             val posLineBreak: Int = content.indexOf('\n');
             var firstLine:String = content;
+            var tbc:Int=0
             if(posLineBreak!=-1)
             {
+                tbc=1;
                 firstLine=content.substring(0,posLineBreak);
             }
             if(firstLine.length>35)
             {
-                return firstLine.substring(0,35)+"..."
+                tbc=1;
+                truncatedContent+= firstLine.substring(0,35)
             }
             else
             {
-                return firstLine.substring(0,  firstLine.length)
+                truncatedContent+= firstLine.substring(0,  firstLine.length)
             }
+            if(tbc==1)
+                truncatedContent+="..."
+            return truncatedContent
         }
     }
 }

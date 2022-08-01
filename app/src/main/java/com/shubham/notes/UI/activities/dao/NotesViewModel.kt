@@ -15,8 +15,8 @@ class NotesViewModel(private val repository: NotesRepository) : ViewModel() {
     /**
      * Launching a new coroutine to insert the data in a non-blocking way
      */
-    fun insert(note: Notes) = viewModelScope.launch {
-        repository.insert(note)
+    fun insert(note: Notes) : Long {
+        return repository.insert(note)
     }
 
     fun update(notes: Notes) = viewModelScope.launch{
@@ -25,6 +25,10 @@ class NotesViewModel(private val repository: NotesRepository) : ViewModel() {
 
     fun getNote(id: Long) :Notes{
         return repository.getNote(id)
+    }
+
+    fun delete(id: Long) {
+        repository.delete(id)
     }
 }
 

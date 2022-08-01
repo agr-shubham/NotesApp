@@ -7,11 +7,11 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NotesDao {
-    @Query("SELECT * FROM notes_table ORDER BY title ASC")
+    @Query("SELECT * FROM notes_table ORDER BY update_time DESC")
     fun getAlphabetizedNotes(): LiveData<List<Notes>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(word: Notes)
+    abstract fun insert(word: Notes): Long
 
     @Query("DELETE FROM notes_table")
     suspend fun deleteAll()
@@ -21,5 +21,8 @@ interface NotesDao {
 
     @Query("SELECT * FROM notes_table WHERE id= :id")
     abstract fun getNote(id: Long) : Notes
+
+    @Query("DELETE FROM notes_table WHERE id= :id")
+    abstract fun deleteNote(id: Long)
 
 }

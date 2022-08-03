@@ -77,7 +77,7 @@
         android:inputType="textCapSentences|textMultiLine"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
-        android:hint="Start typing here"
+        android:hint="@string/start_typing_here"
         android:textColorHint="@color/white"
         android:textColor="@color/white"
         android:textSize="20dp"

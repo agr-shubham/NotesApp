@@ -2,4 +2,8 @@
     <string name="app_name">Notes</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_notes_created">No Notes Created</string>
+    <string name="start_typing_here">Start typing here</string>
+    <string name="title">Title</string>
+    <string name="first_line_of_note_then_truncated">First Line of note then truncated...</string>
 </resources>

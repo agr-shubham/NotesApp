@@ -2,9 +2,7 @@ package com.shubham.notes.UI.activities.dao
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
-import com.shubham.notes.UI.activities.dao.NotesDao
 import com.shubham.notes.UI.activities.entity.Notes
-import kotlinx.coroutines.flow.Flow
 
 class NotesRepository(private val notesDao: NotesDao) {
 

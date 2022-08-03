@@ -5,16 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.PopupMenu
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shubham.notes.R
 import com.shubham.notes.UI.activities.HomeActivity
 import com.shubham.notes.UI.activities.ListNotesActivity
 import com.shubham.notes.UI.activities.entity.Notes
+import com.shubham.notes.databinding.NoteTitleCardBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,16 +21,11 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
 
     private var mContext: Context? = null
 
-    private val notes = ArrayList<Notes>();
-    inner  class ViewHolder( itemView : View): RecyclerView.ViewHolder(itemView){
-        val titleTv : TextView = itemView.findViewById(R.id.note_title)
-        // 11cf  inflated memory
+    private val notes = ArrayList<Notes>()
 
-        val noteFirstLineTv: TextView = itemView.findViewById(R.id.note_first_line)
 
-        val lastModified: TextView = itemView.findViewById(R.id.note_last_modified)
-        val menu: Button = itemView.findViewById<Button>(R.id.item_popup_menu)
-    }
+
+    inner  class ViewHolder(val binding: NoteTitleCardBinding): RecyclerView.ViewHolder(binding.root)
 
     fun updateList(newList:List<Notes>)
     {
@@ -44,26 +37,23 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
         notifyDataSetChanged()
     }
 
-    // MainActivity ( context ) -> member of mainactivity ViewGroup.context
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListNotesAdapter.ViewHolder {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         mContext=parent.context
-        val v = LayoutInflater.from( parent.context  ).inflate(R.layout.note_title_card,parent,false)
-        return ViewHolder( v )
+        val binding = NoteTitleCardBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ListNotesAdapter.ViewHolder, position: Int) {
 
-//         holder.fName.text = title[ position ]
-//         holder.fDesc.text = descriptions [ position ]
-
         holder.apply {
-            titleTv.text = getTruncatedTitle(notes!![position].title)
-//            noteFirstLineTv.text = notes!![position].note.substring(0,min(40, notes!![position].note.length))
-            noteFirstLineTv.text = getTruncatedContent(notes!![position].note)
-            lastModified.text =
-                "Lost Modified: " + SimpleDateFormat("dd-MM-yy HH:mm").format(Date(notes!![position].updateTime))
-            itemView.setOnClickListener { v: View ->
-                var b: Bundle = Bundle();
+            binding.noteTitle.text = getTruncatedTitle(notes[position].title)
+            binding.noteFirstLine.text = getTruncatedContent(notes[position].note)
+            binding.noteLastModified.text =
+                "Lost Modified: " + SimpleDateFormat("dd-MM-yy HH:mm").format(Date(notes[position].updateTime))
+            itemView.setOnClickListener {
+                val b = Bundle()
                 b.putLong("id", notes[position].id)
 
                 val productIntent = Intent(itemView.context, HomeActivity::class.java)
@@ -71,8 +61,8 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
                 itemView.context.startActivity(productIntent)
 
             }
-            menu.setOnClickListener {
-                val popupMenu: PopupMenu = PopupMenu(itemView.context, menu)
+            binding.itemPopupMenu.setOnClickListener {
+                val popupMenu = PopupMenu(itemView.context, binding.itemPopupMenu)
                 popupMenu.menuInflater.inflate(R.menu.list_notes_item_menu, popupMenu.menu)
                 popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                     when (item.itemId) {
@@ -100,7 +90,7 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
 
     private fun getTruncatedTitle(title: String): String {
 
-        if(title.length==0)
+        if(title.isEmpty())
         {
             return "Untitled"
         }
@@ -116,25 +106,25 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
     }
 
     override fun getItemCount(): Int {
-        return notes!!.size
+        return notes.size
     }
     private fun getTruncatedContent(content : String) : String{
         val length : Int = content.length
-        var truncatedContent:String="";
+        var truncatedContent=""
         if(length==0)
             return "Empty"
         else{
-            val posLineBreak: Int = content.indexOf('\n');
-            var firstLine:String = content;
-            var tbc:Int=0
+            val posLineBreak: Int = content.indexOf('\n')
+            var firstLine:String = content
+            var tbc=0
             if(posLineBreak!=-1)
             {
-                tbc=1;
-                firstLine=content.substring(0,posLineBreak);
+                tbc=1
+                firstLine=content.substring(0,posLineBreak)
             }
             if(firstLine.length>35)
             {
-                tbc=1;
+                tbc=1
                 truncatedContent+= firstLine.substring(0,35)
             }
             else

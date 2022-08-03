@@ -3,7 +3,6 @@ package com.shubham.notes.UI.activities.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.sql.Timestamp
 
 @Entity(tableName = "notes_table")
 data class Notes(

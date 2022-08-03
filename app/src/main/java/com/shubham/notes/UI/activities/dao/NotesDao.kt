@@ -3,7 +3,6 @@ package com.shubham.notes.UI.activities.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.shubham.notes.UI.activities.entity.Notes
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NotesDao {

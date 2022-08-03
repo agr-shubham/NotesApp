@@ -5,9 +5,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.shubham.notes.R
-import androidx.activity.viewModels
 import com.shubham.notes.UI.activities.dao.NotesViewModel
 import com.shubham.notes.UI.activities.dao.NotesViewModelFactory
 import com.shubham.notes.UI.activities.entity.Notes
@@ -17,8 +17,8 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding : HomeBinding
 
-    private var createdTimestamp : Long = 0;
-    var id:Long = 0L;
+    private var createdTimestamp : Long = 0
+    var id:Long = 0L
 
     private val notesViewModel: NotesViewModel by viewModels {
 
@@ -35,11 +35,11 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         binding.deleteButton.setOnClickListener(this)
 
 
-        val extras: Bundle? = intent.extras;
+        val extras: Bundle? = intent.extras
 
         if (intent.hasExtra("id")) {
             id=extras!!.getLong("id")
-            val currentNote :Notes =notesViewModel.getNote(id);
+            val currentNote :Notes =notesViewModel.getNote(id)
 
             binding.noteTitle.setText(currentNote.title)
             binding.noteContent.setText(currentNote.note)
@@ -99,8 +99,8 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun autoSave(){
-        var noteContent : String =binding.noteContent!!.text.toString() ;
-        var noteTitle : String =binding.noteTitle!!.text.toString() ;
+        val noteContent : String =binding.noteContent.text.toString()
+        val noteTitle : String =binding.noteTitle.text.toString()
         if(noteContent.isEmpty() && noteTitle.isEmpty())
         {
             return

@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -34,18 +36,19 @@ class ListNotesActivity : AppCompatActivity(){
         Log.d("notesViewModel List", "notesViewModel List"+notesViewModel)
 
         var recyclerView = findViewById<RecyclerView>(R.id.recyclerView1) as RecyclerView
+        var noNotesTV= findViewById<TextView>(R.id.no_notes_message) as TextView
         recyclerView.addItemDecoration(DividerItemDecoration(this, 0));
 //        val notesListLD: LiveData<List<Notes>> = (application as NotesApplication).repository.allWords
         val notesList = listOf<Notes>()
 
 
 
-        var buttonListNotes : ImageButton = findViewById<ImageButton>(R.id.nav_button) as ImageButton
+//        var buttonListNotes : ImageButton = findViewById<ImageButton>(R.id.nav_button) as ImageButton
         var new_note_button : ImageButton = findViewById<ImageButton>(R.id.new_note_button) as ImageButton
 
-        buttonListNotes.setOnClickListener {
-            (this as Activity).finishAfterTransition()
-        }
+//        buttonListNotes.setOnClickListener {
+//            (this as Activity).finishAfterTransition()
+//        }
 
         recyclerView.layoutManager = LinearLayoutManager(this);//,LinearLayout.VERTICAL,false)
         recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
@@ -59,6 +62,14 @@ class ListNotesActivity : AppCompatActivity(){
             notes?.let {
                 adapter.updateList(it)
             }
+            if (notesViewModel.allWords.value!!.isEmpty()) {
+                recyclerView.setVisibility(View.GONE);
+                noNotesTV.setVisibility(View.VISIBLE);
+            }
+            else {
+                recyclerView.setVisibility(View.VISIBLE);
+                noNotesTV.setVisibility(View.GONE);
+            }
         }
 
         new_note_button.setOnClickListener{
@@ -69,6 +80,11 @@ class ListNotesActivity : AppCompatActivity(){
         notesList.forEach {
             notesViewModel.insert(it)
         }
+
+
+    }
+    public fun deleteButton(note : Notes) {
+        notesViewModel.delete(note.id)
     }
 
 

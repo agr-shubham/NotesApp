@@ -1,5 +1,6 @@
 package com.shubham.notes.UI.activities.adapters
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,23 +10,18 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.shubham.notes.R
 import com.shubham.notes.UI.activities.HomeActivity
-import com.shubham.notes.UI.activities.NotesApplication
-import com.shubham.notes.UI.activities.dao.NotesViewModel
-import com.shubham.notes.UI.activities.dao.NotesViewModelFactory
+import com.shubham.notes.UI.activities.ListNotesActivity
 import com.shubham.notes.UI.activities.entity.Notes
-import java.lang.Integer.min
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-
 
 
 class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
+
+    private var mContext: Context? = null
 
     private val notes = ArrayList<Notes>();
     inner  class ViewHolder( itemView : View): RecyclerView.ViewHolder(itemView){
@@ -50,6 +46,7 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
 
     // MainActivity ( context ) -> member of mainactivity ViewGroup.context
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListNotesAdapter.ViewHolder {
+        mContext=parent.context
         val v = LayoutInflater.from( parent.context  ).inflate(R.layout.note_title_card,parent,false)
         return ViewHolder( v )
     }
@@ -74,22 +71,28 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
                 itemView.context.startActivity(productIntent)
 
             }
-//            menu.setOnClickListener {
-//                val popupMenu: PopupMenu = PopupMenu(itemView.context, menu)
-//                popupMenu.menuInflater.inflate(R.menu.list_notes_item_menu, popupMenu.menu)
-//                popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
-//                    when (item.itemId) {
-//                        R.id.menu_delete ->
-//                            notes.removeAt(position)
-//                        R.id.menu_share ->{
-//                            val shareIntent = Intent()
-//                            productIntent.putExtras(b)
-//                        }
-//                    }
-//                    true
-//                })
-//                popupMenu.show()
-//            }
+            menu.setOnClickListener {
+                val popupMenu: PopupMenu = PopupMenu(itemView.context, menu)
+                popupMenu.menuInflater.inflate(R.menu.list_notes_item_menu, popupMenu.menu)
+                popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.menu_delete ->
+                            (mContext as ListNotesActivity).deleteButton(notes[position])
+                        R.id.menu_share ->{
+                            val sendIntent: Intent = Intent().apply {
+                                action = Intent.ACTION_SEND
+                                putExtra(Intent.EXTRA_TEXT, notes[position].title+"\n"+notes[position].note)
+                                type = "text/plain"
+                            }
+
+                            val shareIntent = Intent.createChooser(sendIntent, null)
+                            itemView.context.startActivity(shareIntent)
+                        }
+                    }
+                    true
+                })
+                popupMenu.show()
+            }
 
 
         }

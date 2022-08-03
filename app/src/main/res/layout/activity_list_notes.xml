@@ -7,17 +7,17 @@
     android:background="@color/dark_gray"
     tools:context=".UI.activities.ListNotesActivity">
 
-    <ImageButton
-        android:id="@+id/nav_button"
-        android:layout_width="50dp"
-        android:padding="0dp"
-        android:layout_height="50dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:background="@color/orange"
-        android:src="@drawable/ic_navigation_more"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/nav_button"-->
+<!--        android:layout_width="50dp"-->
+<!--        android:padding="0dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:adjustViewBounds="true"-->
+<!--        android:scaleType="fitCenter"-->
+<!--        android:background="@color/orange"-->
+<!--        android:src="@drawable/ic_navigation_more"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <TextView
         android:id="@+id/title"
@@ -26,7 +26,7 @@
         android:background="@color/orange"
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center_vertical"
-        android:paddingLeft="10dp"
+        android:paddingLeft="15dp"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
         android:text="Notes"
@@ -34,7 +34,9 @@
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/nav_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+<!--        app:layout_constraintStart_toEndOf="@+id/nav_button"-->
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
@@ -66,4 +68,17 @@
             android:paddingStart="2dp" />
     </ScrollView>
 
+    <TextView
+        android:id="@+id/no_notes_message"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="No Notes Created"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 </androidx.constraintlayout.widget.ConstraintLayout>

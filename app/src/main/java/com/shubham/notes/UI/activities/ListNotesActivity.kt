@@ -20,70 +20,57 @@ import com.shubham.notes.UI.activities.adapters.ListNotesAdapter
 import com.shubham.notes.UI.activities.dao.NotesViewModel
 import com.shubham.notes.UI.activities.dao.NotesViewModelFactory
 import com.shubham.notes.UI.activities.entity.Notes
+import com.shubham.notes.databinding.ActivityListNotesBinding
+import com.shubham.notes.databinding.HomeBinding
 
 class ListNotesActivity : AppCompatActivity(){
+
+    private lateinit var binding : ActivityListNotesBinding
 
     private val notesViewModel: NotesViewModel by viewModels {
 
         NotesViewModelFactory((application as NotesApplication).repository)
-        // in turn calls
-        //  WordRepository(database.wordDao())
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list_notes)
+        //view binding
+        binding = ActivityListNotesBinding.inflate(layoutInflater)
+        setContentView( binding.root)
 
-        Log.d("notesViewModel List", "notesViewModel List"+notesViewModel)
-
-        var recyclerView = findViewById<RecyclerView>(R.id.recyclerView1) as RecyclerView
-        var noNotesTV= findViewById<TextView>(R.id.no_notes_message) as TextView
-        recyclerView.addItemDecoration(DividerItemDecoration(this, 0));
-//        val notesListLD: LiveData<List<Notes>> = (application as NotesApplication).repository.allWords
-        val notesList = listOf<Notes>()
-
-
-
-//        var buttonListNotes : ImageButton = findViewById<ImageButton>(R.id.nav_button) as ImageButton
-        var new_note_button : ImageButton = findViewById<ImageButton>(R.id.new_note_button) as ImageButton
-
-//        buttonListNotes.setOnClickListener {
-//            (this as Activity).finishAfterTransition()
-//        }
-
-        recyclerView.layoutManager = LinearLayoutManager(this);//,LinearLayout.VERTICAL,false)
-        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        binding.recyclerView1.addItemDecoration(DividerItemDecoration(this, 0));
+        binding.recyclerView1.layoutManager = LinearLayoutManager(this);//,LinearLayout.VERTICAL,false)
+        binding.recyclerView1.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
         val adapter =  ListNotesAdapter();
 
-        recyclerView.adapter = adapter
+        binding.recyclerView1.adapter = adapter
 
-        recyclerView.setHasFixedSize(true)
+        binding.recyclerView1.setHasFixedSize(true)
         notesViewModel.allWords.observe(this@ListNotesActivity) { notes ->
             notes?.let {
                 adapter.updateList(it)
             }
+
+            //For 0 notes present
             if (notesViewModel.allWords.value!!.isEmpty()) {
-                recyclerView.setVisibility(View.GONE);
-                noNotesTV.setVisibility(View.VISIBLE);
+                binding.recyclerView1.visibility = View.GONE;
+                binding.noNotesMessage.visibility = View.VISIBLE;
             }
             else {
-                recyclerView.setVisibility(View.VISIBLE);
-                noNotesTV.setVisibility(View.GONE);
+                binding.recyclerView1.visibility = View.VISIBLE;
+                binding.noNotesMessage.visibility = View.GONE;
             }
         }
 
-        new_note_button.setOnClickListener{
+        binding.newNoteButton.setOnClickListener{
             val newNoteIntent = Intent(this, HomeActivity::class.java)
             startActivity(newNoteIntent)
         }
 
-        notesList.forEach {
-            notesViewModel.insert(it)
-        }
 
 
     }
-    public fun deleteButton(note : Notes) {
+    fun deleteButton(note : Notes) {
         notesViewModel.delete(note.id)
     }
 

@@ -1,69 +1,52 @@
 package com.shubham.notes.UI.activities
 
-import android.app.ActivityOptions
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.shubham.notes.R
 import androidx.activity.viewModels
 import com.shubham.notes.UI.activities.dao.NotesViewModel
 import com.shubham.notes.UI.activities.dao.NotesViewModelFactory
 import com.shubham.notes.UI.activities.entity.Notes
-import java.text.SimpleDateFormat
-import java.util.*
+import com.shubham.notes.databinding.HomeBinding
 
 class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
-    var noteContentEditText : EditText? = null;
-    var noteTitleEditText : EditText? = null;
-    var createdTimestamp : Long = 0;
+    private lateinit var binding : HomeBinding
+
+    private var createdTimestamp : Long = 0;
     var id:Long = 0L;
 
     private val notesViewModel: NotesViewModel by viewModels {
 
         NotesViewModelFactory((application as NotesApplication).repository)
-        // in turn calls
-        //  WordRepository(database.wordDao())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.home)
+        //View Binding
+        binding = HomeBinding.inflate(layoutInflater)
+        setContentView( binding.root)
+
+        binding.backButton.setOnClickListener(this)
+        binding.deleteButton.setOnClickListener(this)
 
 
-        Log.d("notesViewModel Home", "notesViewModel Home"+notesViewModel)
-        var buttonListNotes : ImageButton = findViewById<ImageButton>(R.id.nav_button) as ImageButton
-        var deleteButton : ImageButton = findViewById<ImageButton>(R.id.delete_button) as ImageButton
-
-        buttonListNotes.setOnClickListener(this)
-        deleteButton.setOnClickListener(this)
-
-        noteContentEditText = findViewById<EditText>(R.id.note_content) as EditText
-        noteTitleEditText = findViewById<EditText>(R.id.note_title) as EditText
-//        notesViewModel.allWords.observe(this@HomeActivity) { notes ->
-//            Log.d("Note Created","Note Created")
-//            Toast.makeText(this,"Note Created",Toast.LENGTH_LONG).show()
-//
-//        }
-
-        val extras: Bundle? = getIntent().getExtras();
+        val extras: Bundle? = intent.extras;
 
         if (intent.hasExtra("id")) {
             id=extras!!.getLong("id")
             val currentNote :Notes =notesViewModel.getNote(id);
 
-            noteTitleEditText!!.setText(currentNote.title)
-            noteContentEditText!!.setText(currentNote.note)
+            binding.noteTitle.setText(currentNote.title)
+            binding.noteContent.setText(currentNote.note)
             createdTimestamp=currentNote.creationTime
         }
 
-        noteTitleEditText!!.addTextChangedListener(object :TextWatcher {
+        binding.noteTitle.addTextChangedListener(object :TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
 //                Log.d("afterTextChanged","afterTextChanged")
@@ -80,7 +63,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
                 autoSave()
             }
         })
-        noteContentEditText!!.addTextChangedListener(object :TextWatcher {
+        binding.noteContent.addTextChangedListener(object :TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
 //                Log.d("afterTextChanged","afterTextChanged")
@@ -101,23 +84,23 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.nav_button -> navButton()
+            R.id.back_button -> backButton()
             R.id.delete_button ->  deleteButton()
         }
     }
 
     private fun deleteButton() {
         notesViewModel.delete(id)
-        navButton()
+        backButton()
     }
 
-    private fun navButton(){
+    private fun backButton(){
         finish()
     }
 
     fun autoSave(){
-        var noteContent : String =noteContentEditText!!.text.toString() ;
-        var noteTitle : String =noteTitleEditText!!.text.toString() ;
+        var noteContent : String =binding.noteContent!!.text.toString() ;
+        var noteTitle : String =binding.noteTitle!!.text.toString() ;
         if(noteContent.isEmpty() && noteTitle.isEmpty())
         {
             return

@@ -14,9 +14,13 @@
         android:theme="@style/Theme.Notes"
         tools:targetApi="31">
         <activity
-            android:name=".UI.activities.HomeActivity"
+            android:name=".UI.activities.AboutUsActivity"
             android:exported="false"
             android:parentActivityName=".UI.activities.ListNotesActivity"/>
+        <activity
+            android:name=".UI.activities.HomeActivity"
+            android:exported="false"
+            android:parentActivityName=".UI.activities.ListNotesActivity" />
         <activity
             android:name=".UI.activities.ListNotesActivity"
             android:exported="true">

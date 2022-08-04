@@ -75,10 +75,8 @@ class ListNotesActivity : AppCompatActivity(){
         binding.navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.about -> {
-                    Log.d("about","about")
-                    Toast.makeText(this,"about",Toast.LENGTH_SHORT).show()
-//                    val intent = Intent(this, AboutPageActivity::class.java)
-//                    startActivity(intent)
+                    val intent = Intent(this,AboutUsActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.contactus -> {

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +15,7 @@ import com.shubham.notes.UI.activities.dao.NotesViewModelFactory
 import com.shubham.notes.UI.activities.entity.Notes
 import com.shubham.notes.databinding.HomeBinding
 
-class HomeActivity : AppCompatActivity(), View.OnClickListener {
+class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding : HomeBinding
 
@@ -30,10 +32,6 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         //View Binding
         binding = HomeBinding.inflate(layoutInflater)
         setContentView( binding.root)
-
-        binding.backButton.setOnClickListener(this)
-        binding.deleteButton.setOnClickListener(this)
-
 
         val extras: Bundle? = intent.extras
 
@@ -82,13 +80,6 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
-    override fun onClick(v: View?) {
-        when (v!!.id) {
-            R.id.back_button -> backButton()
-            R.id.delete_button ->  deleteButton()
-        }
-    }
-
     private fun deleteButton() {
         notesViewModel.delete(id)
         backButton()
@@ -112,5 +103,20 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         else {
             notesViewModel.update(Notes(noteTitle, noteContent, createdTimestamp, System.currentTimeMillis(), id))
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_edit_note_page,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId)
+        {
+            android.R.id.home -> backButton()
+            R.id.delete_note -> deleteButton()
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

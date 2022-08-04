@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -59,11 +60,7 @@ class ListNotesActivity : AppCompatActivity(){
                 transaction.commit()
             }
         }
-        
-        binding.newNoteButton.setOnClickListener{
-            val newNoteIntent = Intent(this, HomeActivity::class.java)
-            startActivity(newNoteIntent)
-        }
+
 
         actionBarToggle = ActionBarDrawerToggle(this, binding.drawerLayout, 0, 0)
         binding.drawerLayout.addDrawerListener(actionBarToggle)
@@ -96,12 +93,6 @@ class ListNotesActivity : AppCompatActivity(){
                 }
             }
         }
-
-        binding.navButton.setOnClickListener {
-                binding.drawerLayout.openDrawer(GravityCompat.START);
-        }
-
-
     }
     fun deleteButton(note : Notes) {
         notesViewModel.delete(note.id)
@@ -121,11 +112,26 @@ class ListNotesActivity : AppCompatActivity(){
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_list_notes_page,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(actionBarToggle.onOptionsItemSelected(item)){
             return true
         }
+        when(item.itemId)
+        {
+            R.id.new_note -> addNewNote()
+
+        }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun addNewNote() {
+        val newNoteIntent = Intent(this, HomeActivity::class.java)
+        startActivity(newNoteIntent)
     }
 
 }

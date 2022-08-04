@@ -20,6 +20,8 @@ import com.shubham.notes.UI.activities.adapters.ListNotesAdapter
 import com.shubham.notes.UI.activities.dao.NotesViewModel
 import com.shubham.notes.UI.activities.dao.NotesViewModelFactory
 import com.shubham.notes.UI.activities.entity.Notes
+import com.shubham.notes.UI.activities.fragments.NoNotesCreatedFragment
+import com.shubham.notes.UI.activities.fragments.NotesListFragment
 import com.shubham.notes.databinding.ActivityListNotesBinding
 
 class ListNotesActivity : AppCompatActivity(){
@@ -38,31 +40,26 @@ class ListNotesActivity : AppCompatActivity(){
         binding = ActivityListNotesBinding.inflate(layoutInflater)
         setContentView( binding.root)
 
-        binding.recyclerView1.addItemDecoration(DividerItemDecoration(this, 0))
-        binding.recyclerView1.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView1.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-
-        val adapter =  ListNotesAdapter()
-
-        binding.recyclerView1.adapter = adapter
-
-        binding.recyclerView1.setHasFixedSize(true)
+        val noNotesCreatedFragment = NoNotesCreatedFragment()
+        val notesListFragment = NotesListFragment()
         notesViewModel.allNotes.observe(this@ListNotesActivity) { notes ->
             notes?.let {
-                adapter.updateList(it)
+                notesListFragment.updateAdapterList(it)
             }
 
             //For 0 notes present
             if (notesViewModel.allNotes.value!!.isEmpty()) {
-                binding.recyclerView1.visibility = View.GONE
-                binding.noNotesMessage.visibility = View.VISIBLE
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.frame, noNotesCreatedFragment)
+                transaction.commit()
             }
             else {
-                binding.recyclerView1.visibility = View.VISIBLE
-                binding.noNotesMessage.visibility = View.GONE
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.frame, notesListFragment)
+                transaction.commit()
             }
         }
-
+        
         binding.newNoteButton.setOnClickListener{
             val newNoteIntent = Intent(this, HomeActivity::class.java)
             startActivity(newNoteIntent)

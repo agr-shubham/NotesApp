@@ -12,8 +12,8 @@ interface NotesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insert(word: Notes): Long
 
-    @Query("DELETE FROM notes_table")
-    suspend fun deleteAll()
+//    @Query("DELETE FROM notes_table")
+//    suspend fun deleteAll()
 
     @Update
     abstract fun update(notes: Notes)

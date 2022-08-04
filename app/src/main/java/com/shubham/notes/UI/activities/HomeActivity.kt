@@ -1,5 +1,7 @@
 package com.shubham.notes.UI.activities
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -81,9 +83,22 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun deleteButton() {
-        notesViewModel.delete(id)
-        backButton()
+        val alert= AlertDialog.Builder(this)
+        alert.setTitle("Delete entry")
+        alert.setMessage("Are you sure you want to delete?")
+        alert.setPositiveButton(android.R.string.yes, object : DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface, which: Int) {
+                notesViewModel.delete(id)
+                backButton()
+            }
+        })
+        alert.setNegativeButton(android.R.string.no,
+            DialogInterface.OnClickListener { dialog, which -> // close dialog
+                dialog.cancel()
+            })
+        alert.show()
     }
+
 
     private fun backButton(){
         finish()

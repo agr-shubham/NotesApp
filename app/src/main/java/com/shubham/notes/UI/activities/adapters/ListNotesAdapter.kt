@@ -51,7 +51,7 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
             binding.noteTitle.text = getTruncatedTitle(notes[position].title)
             binding.noteFirstLine.text = getTruncatedContent(notes[position].note)
             binding.noteLastModified.text =
-                "Lost Modified: " + SimpleDateFormat("dd-MM-yy HH:mm").format(Date(notes[position].updateTime))
+                "Last Modified: " + SimpleDateFormat("dd-MM-yy HH:mm").format(Date(notes[position].updateTime))
             itemView.setOnClickListener {
                 val b = Bundle()
                 b.putLong("id", notes[position].id)

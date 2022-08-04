@@ -1,29 +1,25 @@
 package com.shubham.notes.UI.activities
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.navigation.NavigationView
 import com.shubham.notes.R
-import com.shubham.notes.UI.activities.adapters.ListNotesAdapter
 import com.shubham.notes.UI.activities.dao.NotesViewModel
 import com.shubham.notes.UI.activities.dao.NotesViewModelFactory
 import com.shubham.notes.UI.activities.entity.Notes
 import com.shubham.notes.UI.activities.fragments.NoNotesCreatedFragment
 import com.shubham.notes.UI.activities.fragments.NotesListFragment
 import com.shubham.notes.databinding.ActivityListNotesBinding
+
 
 class ListNotesActivity : AppCompatActivity(){
 
@@ -93,7 +89,19 @@ class ListNotesActivity : AppCompatActivity(){
         }
     }
     fun deleteButton(note : Notes) {
-        notesViewModel.delete(note.id)
+        val alert= AlertDialog.Builder(this)
+        alert.setTitle("Delete entry")
+        alert.setMessage("Are you sure you want to delete?")
+        alert.setPositiveButton(android.R.string.yes, object : DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface, which: Int) {
+                notesViewModel.delete(note.id)
+            }
+        })
+        alert.setNegativeButton(android.R.string.no,
+            DialogInterface.OnClickListener { dialog, which -> // close dialog
+                dialog.cancel()
+            })
+        alert.show()
     }
 
     override fun onSupportNavigateUp(): Boolean {

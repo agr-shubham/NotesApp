@@ -58,8 +58,14 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
     override fun onBindViewHolder(holder: ListNotesAdapter.ViewHolder, position: Int) {
 
         holder.apply {
+            if(notes[position].title.length!=0)
             binding.noteTitle.text = notes[position].title
-            binding.noteFirstLine.text = notes[position].note
+            else
+                binding.noteTitle.text = "Untitled"
+            if(notes[position].note.length!=0)
+                binding.noteFirstLine.text = notes[position].note
+            else
+                binding.noteFirstLine.text = "Blank"
             binding.noteLastModified.text =
                 "Last Modified: " + SimpleDateFormat("dd-MM-yy HH:mm").format(Date(notes[position].updateTime))
             itemView.setOnClickListener {

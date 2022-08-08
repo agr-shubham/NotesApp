@@ -99,8 +99,8 @@ class NotesListFragment : Fragment() {
         // running a for loop to compare elements.
         for (item in notes) {
             // checking if the entered string matched with any item of our recycler view.
-            if (item.title.toLowerCase().contains(text.lowercase(Locale.getDefault())) ||
-                item.note.toLowerCase().contains(text.lowercase(Locale.getDefault()))) {
+            if (item.title.contains(text,ignoreCase = true) ||
+                item.note.contains(text,ignoreCase = true)) {
                 // if the item is matched we are
                 // adding it to our filtered list.
                 filteredlist.add(item)

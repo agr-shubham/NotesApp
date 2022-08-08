@@ -2,15 +2,13 @@ package com.shubham.notes.UI.activities.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.shubham.notes.R
-import com.shubham.notes.UI.activities.HomeActivity
-import com.shubham.notes.UI.activities.ListNotesActivity
+import com.shubham.notes.UI.activities.MainActivity
 import com.shubham.notes.UI.activities.entity.Notes
 import com.shubham.notes.databinding.NoteTitleCardBinding
 import java.text.SimpleDateFormat
@@ -53,13 +51,7 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
             binding.noteLastModified.text =
                 "Last Modified: " + SimpleDateFormat("dd-MM-yy HH:mm").format(Date(notes[position].updateTime))
             itemView.setOnClickListener {
-                val b = Bundle()
-                b.putLong("id", notes[position].id)
-
-                val productIntent = Intent(itemView.context, HomeActivity::class.java)
-                productIntent.putExtras(b)
-                itemView.context.startActivity(productIntent)
-
+                (mContext as MainActivity).loadEditNoteFragment(notes[position].id)
             }
             binding.itemPopupMenu.setOnClickListener {
                 val popupMenu = PopupMenu(itemView.context, binding.itemPopupMenu)
@@ -67,7 +59,7 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
                 popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                     when (item.itemId) {
                         R.id.menu_delete ->
-                            (mContext as ListNotesActivity).deleteButton(notes[position])
+                            (mContext as MainActivity).deleteButton(notes[position])
                         R.id.menu_share ->{
                             val sendIntent: Intent = Intent().apply {
                                 action = Intent.ACTION_SEND

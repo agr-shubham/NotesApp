@@ -2,12 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".UI.activities.HomeActivity"
+    tools:context=".UI.activities.MainActivity"
     >
     <item
         android:title="Delete Note"
         android:id="@+id/delete_note"
         android:icon="@drawable/ic_baseline_delete_24"
         app:showAsAction="always" />
-
 </menu>

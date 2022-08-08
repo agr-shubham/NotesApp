@@ -1,11 +1,12 @@
 package com.shubham.notes.UI.activities.fragments
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.shubham.notes.R
+import com.shubham.notes.UI.activities.MainActivity
+import com.shubham.notes.databinding.FragmentNoNotesCreatedBinding
+import com.shubham.notes.databinding.FragmentNotesListBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -19,10 +20,11 @@ private const val ARG_PARAM2 = "param2"
  */
 class NoNotesCreatedFragment : Fragment() {
 
+    private lateinit var binding : FragmentNoNotesCreatedBinding;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -30,6 +32,20 @@ class NoNotesCreatedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_no_notes_created, container, false)
+        binding= FragmentNoNotesCreatedBinding.inflate(inflater,container,false)
+        // Inflate the layout for this fragment
+        return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_list_notes_page,menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId)
+        {
+            R.id.new_note -> (activity as MainActivity).addNewNote()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

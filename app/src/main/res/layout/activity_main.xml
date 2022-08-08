@@ -5,13 +5,13 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.activities.ListNotesActivity">
+    tools:context=".UI.activities.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/dark_gray"
-        tools:context=".UI.activities.ListNotesActivity">
+        tools:context=".UI.activities.MainActivity">
 
 
         <FrameLayout

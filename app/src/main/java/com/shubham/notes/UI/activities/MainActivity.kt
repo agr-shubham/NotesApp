@@ -4,63 +4,45 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.shubham.notes.R
 import com.shubham.notes.UI.activities.dao.NotesViewModel
 import com.shubham.notes.UI.activities.dao.NotesViewModelFactory
 import com.shubham.notes.UI.activities.entity.Notes
+import com.shubham.notes.UI.activities.fragments.EditNoteFragment
 import com.shubham.notes.UI.activities.fragments.NoNotesCreatedFragment
 import com.shubham.notes.UI.activities.fragments.NotesListFragment
-import com.shubham.notes.databinding.ActivityListNotesBinding
+import com.shubham.notes.databinding.ActivityMainBinding
 
+class MainActivity : AppCompatActivity() {
 
-class ListNotesActivity : AppCompatActivity(){
-
-    private lateinit var actionBarToggle: ActionBarDrawerToggle
-
-    private lateinit var binding : ActivityListNotesBinding
 
     private val notesViewModel: NotesViewModel by viewModels {
 
         NotesViewModelFactory((application as NotesApplication).repository)
     }
+
+    private lateinit var actionBarToggle: ActionBarDrawerToggle
+
+    private lateinit var binding : ActivityMainBinding
+
+    lateinit var notesListFragment : NotesListFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //view binding
-        binding = ActivityListNotesBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView( binding.root)
-
-        val noNotesCreatedFragment = NoNotesCreatedFragment()
-        val notesListFragment = NotesListFragment()
-        notesViewModel.allNotes.observe(this@ListNotesActivity) { notes ->
-            notes?.let {
-                notesListFragment.updateAdapterList(it)
-            }
-
-            //For 0 notes present
-            if (notesViewModel.allNotes.value!!.isEmpty()) {
-                val transaction = supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.frame, noNotesCreatedFragment)
-                transaction.commit()
-            }
-            else {
-                val transaction = supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.frame, notesListFragment)
-                transaction.commit()
-            }
-        }
-
 
         actionBarToggle = ActionBarDrawerToggle(this, binding.drawerLayout, 0, 0)
         binding.drawerLayout.addDrawerListener(actionBarToggle)
-
 
         // Display the hamburger icon to launch the drawer
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -87,21 +69,15 @@ class ListNotesActivity : AppCompatActivity(){
                 }
             }
         }
-    }
-    fun deleteButton(note : Notes) {
-        val alert= AlertDialog.Builder(this)
-        alert.setTitle("Delete entry")
-        alert.setMessage("Are you sure you want to delete?")
-        alert.setPositiveButton(android.R.string.yes, object : DialogInterface.OnClickListener {
-            override fun onClick(dialog: DialogInterface, which: Int) {
-                notesViewModel.delete(note.id)
+//        val noNotesCreatedFragment = NoNotesCreatedFragment()
+        notesListFragment = NotesListFragment()
+        notesViewModel.allNotes.observe(this@MainActivity) { notes ->
+            notes?.let {
+                notesListFragment.updateAdapterList(it)
             }
-        })
-        alert.setNegativeButton(android.R.string.no,
-            DialogInterface.OnClickListener { dialog, which -> // close dialog
-                dialog.cancel()
-            })
-        alert.show()
+        }
+
+        loadListNotesFragment()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -118,26 +94,61 @@ class ListNotesActivity : AppCompatActivity(){
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_list_notes_page,menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(actionBarToggle.onOptionsItemSelected(item)){
             return true
         }
-        when(item.itemId)
-        {
-            R.id.new_note -> addNewNote()
-
-        }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun addNewNote() {
-        val newNoteIntent = Intent(this, HomeActivity::class.java)
-        startActivity(newNoteIntent)
+    fun loadListNotesFragment(){
+        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frame, notesListFragment)
+        transaction.commit()
+    }
+
+    fun loadEditNoteFragment(id: Long) {
+        val editNoteFragment = EditNoteFragment(id)
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frame,editNoteFragment )
+        transaction.addToBackStack("editnote")
+        transaction.commit()
+    }
+
+    fun deleteButton(note : Notes) :Boolean {
+        val alert= AlertDialog.Builder(this)
+        var flag:Boolean=false;
+        alert.setTitle("Delete entry")
+        alert.setMessage("Are you sure you want to delete?")
+        alert.setPositiveButton(android.R.string.yes, object : DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface, which: Int) {
+                flag=true
+                notesViewModel.delete(note.id)
+            }
+        })
+        alert.setNegativeButton(android.R.string.no,
+            DialogInterface.OnClickListener { dialog, which -> // close dialog
+                dialog.cancel()
+            })
+        alert.show()
+        return flag
+    }
+
+    fun addNewNote() {
+        loadEditNoteFragment(0)
+    }
+
+    fun getNote(id:Long): Notes {
+        return notesViewModel.getNote(id)
+    }
+
+    fun insertNote(note:Notes):Long{
+        return notesViewModel.insert(note)
+    }
+
+    fun updateNote(note:Notes){
+        notesViewModel.update(note)
     }
 
 }

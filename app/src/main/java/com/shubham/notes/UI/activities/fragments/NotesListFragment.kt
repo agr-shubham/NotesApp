@@ -1,24 +1,29 @@
 package com.shubham.notes.UI.activities.fragments
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shubham.notes.R
+import com.shubham.notes.UI.activities.MainActivity
+import com.shubham.notes.UI.activities.NotesApplication
 import com.shubham.notes.UI.activities.adapters.ListNotesAdapter
+import com.shubham.notes.UI.activities.dao.NotesViewModel
+import com.shubham.notes.UI.activities.dao.NotesViewModelFactory
 import com.shubham.notes.UI.activities.entity.Notes
 import com.shubham.notes.databinding.FragmentNotesListBinding
 
 
 class NotesListFragment : Fragment() {
 
+
     val adapter =  ListNotesAdapter();
     private lateinit var binding : FragmentNotesListBinding;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -45,6 +50,18 @@ class NotesListFragment : Fragment() {
 
     fun updateAdapterList(notes:List<Notes>){
         adapter.updateList(notes)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_list_notes_page,menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId)
+        {
+            R.id.new_note -> (activity as MainActivity).addNewNote()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 

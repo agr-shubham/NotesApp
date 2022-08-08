@@ -7,6 +7,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -17,8 +18,8 @@ import com.shubham.notes.R
 import com.shubham.notes.UI.activities.dao.NotesViewModel
 import com.shubham.notes.UI.activities.dao.NotesViewModelFactory
 import com.shubham.notes.UI.activities.entity.Notes
+import com.shubham.notes.UI.activities.fragments.AboutUsFragment
 import com.shubham.notes.UI.activities.fragments.EditNoteFragment
-import com.shubham.notes.UI.activities.fragments.NoNotesCreatedFragment
 import com.shubham.notes.UI.activities.fragments.NotesListFragment
 import com.shubham.notes.databinding.ActivityMainBinding
 
@@ -35,6 +36,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
 
     lateinit var notesListFragment : NotesListFragment
+    lateinit var aboutUsFragment: AboutUsFragment
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +56,7 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.about -> {
-                    val intent = Intent(this,AboutUsActivity::class.java)
-                    startActivity(intent)
+                    loadAboutUsFragment()
                     true
                 }
                 R.id.contactus -> {
@@ -76,8 +78,8 @@ class MainActivity : AppCompatActivity() {
                 notesListFragment.updateAdapterList(it)
             }
         }
-
         loadListNotesFragment()
+        aboutUsFragment=AboutUsFragment()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -102,7 +104,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun loadListNotesFragment(){
-        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.frame, notesListFragment)
         transaction.commit()
@@ -112,19 +113,26 @@ class MainActivity : AppCompatActivity() {
         val editNoteFragment = EditNoteFragment(id)
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.frame,editNoteFragment )
-        transaction.addToBackStack("editnote")
+        transaction.addToBackStack("editNote")
         transaction.commit()
     }
 
-    fun deleteButton(note : Notes) :Boolean {
+    private fun loadAboutUsFragment(){
+        binding.drawerLayout.closeDrawer(GravityCompat.START, false);
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frame, aboutUsFragment)
+        transaction.addToBackStack("aboutUs")
+        transaction.commit()
+    }
+
+    fun deleteButton(note : Notes) {
         val alert= AlertDialog.Builder(this)
-        var flag:Boolean=false;
         alert.setTitle("Delete entry")
         alert.setMessage("Are you sure you want to delete?")
         alert.setPositiveButton(android.R.string.yes, object : DialogInterface.OnClickListener {
             override fun onClick(dialog: DialogInterface, which: Int) {
-                flag=true
                 notesViewModel.delete(note.id)
+                loadListNotesFragment()
             }
         })
         alert.setNegativeButton(android.R.string.no,
@@ -132,7 +140,6 @@ class MainActivity : AppCompatActivity() {
                 dialog.cancel()
             })
         alert.show()
-        return flag
     }
 
     fun addNewNote() {

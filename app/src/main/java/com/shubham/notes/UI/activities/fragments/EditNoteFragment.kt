@@ -94,9 +94,7 @@ class EditNoteFragment(var id:Long = 0L) : Fragment() {
     }
 
     private fun deleteButton() {
-        if((activity as MainActivity).deleteButton(currentNote!!) )
-            (activity as MainActivity).loadListNotesFragment()
-
+        (activity as MainActivity).deleteButton(currentNote!!)
     }
 
     fun autoSave(){

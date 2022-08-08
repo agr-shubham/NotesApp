@@ -19,7 +19,16 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
 
     private var mContext: Context? = null
 
-    private val notes = ArrayList<Notes>()
+    private var notes = ArrayList<Notes>()
+
+    fun filterList(filterllist: ArrayList<Notes>) {
+        // below line is to add our filtered
+        // list in our course array list.
+        notes = filterllist
+        // below line is to notify our adapter
+        // as change in recycler view data.
+        notifyDataSetChanged()
+    }
 
     fun getNotesSize():Int{
         return notes.size

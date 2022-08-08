@@ -2,7 +2,6 @@ package com.shubham.notes.UI.activities.fragments
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -46,12 +45,12 @@ class NotesListFragment : Fragment() {
 
         binding.recyclerView1.setHasFixedSize(true)
 
-        checkNoNotes()
+        checkIfNotesPresent()
 
 
     }
 
-    fun checkNoNotes(){
+    private fun checkIfNotesPresent(){
         if (adapter.getNotesSize()==0) {
             binding.recyclerView1.visibility = View.GONE
             binding.noNotesMessage.visibility = View.VISIBLE
@@ -65,7 +64,7 @@ class NotesListFragment : Fragment() {
     fun updateAdapterList(notesArg:List<Notes>){
         this.notes= notesArg as ArrayList<Notes>
         adapter.updateList(notesArg)
-        checkNoNotes()
+        checkIfNotesPresent()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -107,8 +106,8 @@ class NotesListFragment : Fragment() {
                 filteredlist.add(item)
             }
         }
-            adapter.filterList(filteredlist)
-            checkNoNotes()
+        adapter.filterList(filteredlist)
+        checkIfNotesPresent()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

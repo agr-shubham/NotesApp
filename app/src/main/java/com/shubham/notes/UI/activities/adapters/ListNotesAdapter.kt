@@ -58,8 +58,8 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
     override fun onBindViewHolder(holder: ListNotesAdapter.ViewHolder, position: Int) {
 
         holder.apply {
-            binding.noteTitle.text = getTruncatedTitle(notes[position].title)
-            binding.noteFirstLine.text = getTruncatedContent(notes[position].note)
+            binding.noteTitle.text = notes[position].title
+            binding.noteFirstLine.text = notes[position].note
             binding.noteLastModified.text =
                 "Last Modified: " + SimpleDateFormat("dd-MM-yy HH:mm").format(Date(notes[position].updateTime))
             itemView.setOnClickListener {
@@ -92,52 +92,7 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
         }
     }
 
-    private fun getTruncatedTitle(title: String): String {
-
-        if(title.isEmpty())
-        {
-            return "Untitled"
-        }
-        if(title.length>30)
-        {
-            return title.substring(0,30)+"..."
-        }
-        else
-        {
-            return title.substring(0,  title.length)
-        }
-
-    }
-
     override fun getItemCount(): Int {
         return notes.size
-    }
-    private fun getTruncatedContent(content : String) : String{
-        val length : Int = content.length
-        var truncatedContent=""
-        if(length==0)
-            return "Empty"
-        else{
-            val posLineBreak: Int = content.indexOf('\n')
-            var firstLine:String = content
-            var tbc=0
-            if(posLineBreak!=-1)
-            {
-                tbc=1
-                firstLine=content.substring(0,posLineBreak)
-            }
-            if(firstLine.length>35)
-            {
-                tbc=1
-                truncatedContent+= firstLine.substring(0,35)
-            }
-            else
-            {
-                truncatedContent+= firstLine.substring(0,  firstLine.length)
-            }
-            if(tbc==1)
-                truncatedContent+="..."
-            return truncatedContent
-        }
     }
 }

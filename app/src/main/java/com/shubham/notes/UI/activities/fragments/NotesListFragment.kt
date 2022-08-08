@@ -46,10 +46,26 @@ class NotesListFragment : Fragment() {
 
         binding.recyclerView1.setHasFixedSize(true)
 
+        checkNoNotes()
+
+
+    }
+
+    fun checkNoNotes(){
+        if (adapter.getNotesSize()==0) {
+            binding.recyclerView1.visibility = View.GONE
+            binding.noNotesMessage.visibility = View.VISIBLE
+        }
+        else {
+            binding.recyclerView1.visibility = View.VISIBLE
+            binding.noNotesMessage.visibility = View.GONE
+        }
     }
 
     fun updateAdapterList(notes:List<Notes>){
         adapter.updateList(notes)
+        checkNoNotes()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

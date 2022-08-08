@@ -21,6 +21,9 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
 
     private val notes = ArrayList<Notes>()
 
+    fun getNotesSize():Int{
+        return notes.size
+    }
 
 
     inner  class ViewHolder(val binding: NoteTitleCardBinding): RecyclerView.ViewHolder(binding.root)

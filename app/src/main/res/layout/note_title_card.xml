@@ -48,7 +48,7 @@
                 android:textSize="12sp"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="@color/dull_white"
-                android:text="Last Modified:"/>
+                android:text="@string/last_modified"/>
         </LinearLayout>
         <Button
             android:id="@+id/item_popup_menu"

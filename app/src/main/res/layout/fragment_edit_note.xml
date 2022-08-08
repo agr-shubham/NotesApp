@@ -17,9 +17,9 @@
         android:background="@color/dark_gray"
         android:gravity="top"
         android:inputType="textCapSentences"
-        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
         android:paddingTop="15dp"
-        android:hint="Title"
+        android:hint="@string/title"
         android:textColorHint="@color/white"
         android:textColor="@color/white"
         android:textSize="30dp" />
@@ -32,11 +32,11 @@
         android:background="@color/dark_gray"
         android:gravity="top"
         android:inputType="textCapSentences|textMultiLine"
-        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
         android:paddingTop="5dp"
         android:hint="@string/start_typing_here"
         android:textColorHint="@color/white"
         android:textColor="@color/white"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
     </LinearLayout>
 </FrameLayout>

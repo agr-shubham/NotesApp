@@ -5,7 +5,7 @@
     tools:context=".UI.activities.MainActivity"
     >
     <item
-        android:title="Delete Note"
+        android:title="@string/delete_note"
         android:id="@+id/delete_note"
         android:icon="@drawable/ic_baseline_delete_24"
         app:showAsAction="always" />

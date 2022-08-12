@@ -44,8 +44,15 @@ class NotesListFragment : Fragment() {
         binding.recyclerView1.adapter = adapter
 
         binding.recyclerView1.setHasFixedSize(true)
+        (activity as MainActivity).notesViewModel.allNotes.observe(viewLifecycleOwner) { list ->
+            notes.clear()
 
-        checkIfNotesPresent()
+            notes.addAll(list)
+            list?.let {
+                adapter.updateList(it)
+            }
+            checkIfNotesPresent()
+        }
 
 
     }

@@ -9,14 +9,15 @@ import android.util.Log
 import android.view.*
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.shubham.notes.R
 import com.shubham.notes.UI.activities.MainActivity
 import com.shubham.notes.UI.activities.entity.Notes
 import com.shubham.notes.databinding.FragmentEditNoteBinding
 import com.shubham.notes.databinding.FragmentNotesListBinding
 
-class EditNoteFragment(var id:Long = 0L) : Fragment() {
-
+class EditNoteFragment : Fragment() {
+    var id:Long = 0L
     private lateinit var binding : FragmentEditNoteBinding
     var currentNote:Notes?=null
 
@@ -31,6 +32,8 @@ class EditNoteFragment(var id:Long = 0L) : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding= FragmentEditNoteBinding.inflate(inflater,container,false)
+        val args: EditNoteFragmentArgs by navArgs()
+        this.id=args.id
         return binding.root
     }
 

@@ -2,14 +2,21 @@ package com.shubham.notes.UI.activities
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.shubham.notes.R
 import com.shubham.notes.UI.activities.dao.NotesViewModel
 import com.shubham.notes.UI.activities.dao.NotesViewModelFactory
@@ -27,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
 
-    private lateinit var actionBarToggle: ActionBarDrawerToggle
+    private lateinit var appBarConfiguration : AppBarConfiguration
 
     private lateinit var binding : ActivityMainBinding
 
@@ -40,20 +47,40 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment=supportFragmentManager
             .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController=navHostFragment.navController
-        setupActionBarWithNavController(navController)
+        binding.navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.aboutUsFragment -> {
+                    binding.drawerLayout.closeDrawer(GravityCompat.START, false);
+                    navController.navigate(R.id.aboutUsFragment)
+                    true
+                }
+                R.id.contactus -> {
+                    Log.d("about","contactus")
+                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:9183281237"))
+                    startActivity(intent)
+                    true
+                }
+                else -> {
+                    false}
+            }
+        }
+        appBarConfiguration= AppBarConfiguration(navController.graph,binding.drawerLayout)
+
+        setupActionBarWithNavController(navController,appBarConfiguration)
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            return true
+        }
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     fun loadEditNoteFragment(id: Long) {
         val action=NotesListFragmentDirections.actionNotesListFragmentToEditNoteFragment2(id)
         navController.navigate(action)
-    }
-
-    private fun loadAboutUsFragment(){
-        navController.navigate(R.id.action_notesListFragment_to_aboutUsFragment)
     }
 
     fun deleteButton(note : Notes) {

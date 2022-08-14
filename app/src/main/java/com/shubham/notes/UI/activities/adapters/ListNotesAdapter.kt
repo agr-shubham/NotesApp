@@ -22,11 +22,7 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
     private var notes = ArrayList<Notes>()
 
     fun filterList(filterllist: ArrayList<Notes>) {
-        // below line is to add our filtered
-        // list in our course array list.
         notes = filterllist
-        // below line is to notify our adapter
-        // as change in recycler view data.
         notifyDataSetChanged()
     }
 
@@ -43,7 +39,7 @@ class ListNotesAdapter() : RecyclerView.Adapter<ListNotesAdapter.ViewHolder>(){
         notes.clear()
 
         notes.addAll(newList)
-        //notify data change
+
         notifyDataSetChanged()
     }
 

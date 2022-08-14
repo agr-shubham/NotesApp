@@ -37,9 +37,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView( binding.root)
 
-        actionBarToggle = ActionBarDrawerToggle(this, binding.drawerLayout, 0, 0)
-        binding.drawerLayout.addDrawerListener(actionBarToggle)
-
         val navHostFragment=supportFragmentManager
             .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController=navHostFragment.navController
